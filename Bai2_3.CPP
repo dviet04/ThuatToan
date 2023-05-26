@@ -2,59 +2,63 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-int n, result = 99999999;
-int s[11], b[11], a[11];
-int dochua=1, docay=0;
+int n;
+int Chua[12], Cay[12], danhDau[12];
+int doChua, doCay;
+int KQ = 999999999;
 
-void in(){
-	cin>> n;
-	for(int i = 1; i <= n; i++)
+void Nhap()
+{
+    for(int i = 1; i <= n; i++)
+        cin>> Chua[i] >> Cay[i];
+    return;
+}
+
+int check()
+{
+    for(int i = 1; i <= n; i++)
     {
-		cin>> s[i];
-		cin>> b[i];
-	}
-}
-bool check()
-{
-	for(int x = 1; x <= n; x++){
-		if(a[x] == 1)
-			return true;
-	}
-	return false;
+        if(danhDau[i] == 1)
+            return 1;
+    }
+    return 0;
 }
 
-void res()
+void ChenhLech()
 {
-	dochua = 1;
-	docay = 0;
-	for(int u = 1 ; u <= n; u++){
-		if( a[u] == 1){
-			dochua *= s[u];
-			docay += b[u];
-		}
-	}
-	result = min(result, abs(dochua-docay));
+    doChua = 1, doCay = 0;
+    for(int i = 1; i <= n; i++)
+    {
+        if(danhDau[i] == 1)
+        {
+            doChua *= Chua[i];
+            doCay += Cay[i];
+        }
+    }
+    KQ = min(KQ, abs(doChua - doCay));
 }
 
 void Try(int i)
 {
-	for( int j = 0; j <= 1; j++)
+    for(int j = 0; j <= 1; j++)
     {
-		a[i] = j;
-		if(i == n)
+        danhDau[i] = j;
+        if(i == n)
         {
-			if(check() == true) 
-                res();
-		}
-		else Try( i + 1);
-	}
+            if(check() == 1)
+                ChenhLech();
+        }
+        else
+            Try(i + 1);
+    }
 }
 
-int main(){
-	ios_base::sync_with_stdio(0);
-    cin.tie(NULL);cout.tie(NULL);
-    in();
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(0) ; cout.tie(0);
+    cin>> n;
+    Nhap();
     Try(1);
-    cout<< result;
-	return 0;
+    cout<< KQ;
 }
